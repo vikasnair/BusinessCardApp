@@ -5,6 +5,15 @@
 
 # dependencies
 /node_modules
+/functions/node_modules
+
+# firebase
+.firebaserc
+
+# lint
+.eslintrc.json
+/functions/tslint.json
+
 
 # misc
 .env.local
