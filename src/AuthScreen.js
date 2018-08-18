@@ -1,20 +1,25 @@
 import React from 'react';
 import { Button, TextInput, View } from 'react-native';
-import firebase from './firebase.js';
-import styles from './styles.js';
+import firebase from './util/firebase.js';
+import styles from './util/styles.js';
 
-export default class SignupScreen extends React.Component {
+class Auth extends React.Component {
     createAccount() {
         if (!this.isValid()) { return; }
         const createAccount = firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
         createAccount.then(this.continue).catch(this.showError);
     }
 
+    login() {
+        const login = firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password);
+        login.then(this.continue).catch(this.showError);
+    }
+
     continue() {
         // console.log('success');
     }
 
-    showError() {
+    showError(error) {
         // console.log(error);
     }
 
@@ -35,17 +40,33 @@ export default class SignupScreen extends React.Component {
                     placeholder='Password'
                     onChangeText={(text) => this.setState({ password: text })}
                 />
-                <TextInput
+                {/* <TextInput
                     style={[styles.content, styles.formInput]}
-                    placeholder='Password'
+                    placeholder='Verify password'
                     onChangeText={(text) => this.setState({ verifyPassword: text })}
-                />
+                /> */}
                 <Button
-                    onPress={this.createAccount.bind(this)}
-                    title='Sign up'
+                    onPress={this.props.isSignup ? this.createAccount.bind(this) : this.login.bind(this)}
+                    title={this.props.isSignup ? 'Create account' : 'Login'}
                     style={styles.content}
                 />
             </View>
+        );
+    }
+}
+
+export class LoginScreen extends React.Component {
+    render() {
+        return (
+            <Auth isSignup={false} />
+        );
+    }
+}
+
+export class SignupScreen extends React.Component {
+    render() {
+        return (
+            <Auth isSignup={true} />
         );
     }
 }

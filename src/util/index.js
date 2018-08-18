@@ -4,7 +4,7 @@ var _expo = require('expo');
 
 var _expo2 = _interopRequireDefault(_expo);
 
-var _App = require('./App');
+var _App = require('../App');
 
 var _App2 = _interopRequireDefault(_App);
 
