@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
         width: '90%',
         backgroundColor: 'white',
         color: 'black'
+    },
+
+    error: {
+        color: 'red'
     }
 });
 

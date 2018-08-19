@@ -1,9 +1,17 @@
 import React from 'react';
-import { Button, TextInput, View } from 'react-native';
+import { Button, Text, TextInput, View } from 'react-native';
 import firebase from './util/firebase.js';
 import styles from './util/styles.js';
 
 class Auth extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            errorMessage : ''
+        };
+    }
+
     createAccount() {
         if (!this.isValid()) { return; }
         const createAccount = firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
@@ -21,6 +29,7 @@ class Auth extends React.Component {
 
     showError(error) {
         // console.log(error);
+        this.setState({ errorMessage : error.message });
     }
 
     isValid() {
@@ -40,16 +49,19 @@ class Auth extends React.Component {
                     placeholder='Password'
                     onChangeText={(text) => this.setState({ password: text })}
                 />
-                {/* <TextInput
+                {this.props.isSignup ? <TextInput
                     style={[styles.content, styles.formInput]}
                     placeholder='Verify password'
                     onChangeText={(text) => this.setState({ verifyPassword: text })}
-                /> */}
+                /> : null}
                 <Button
                     onPress={this.props.isSignup ? this.createAccount.bind(this) : this.login.bind(this)}
                     title={this.props.isSignup ? 'Create account' : 'Login'}
                     style={styles.content}
                 />
+                <Text style={[styles.content, styles.error]}>
+                    {this.state.errorMessage}
+                </Text>
             </View>
         );
     }
